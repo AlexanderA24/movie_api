@@ -1,4 +1,4 @@
-!<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -11,18 +11,102 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-
+        <h1>Movie API </h1> 
         <p>
             This API returns information on movies, directors and genres so that a user can learn more about movies theyve watched or are interested in.
             It also allows for the creation of profiles so users can save data about their favourite movies.
+
+            Please list of API commands below
             
         </p>
         
+        <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Request</th>
+                <th scope="col">URL</th>
+                <th scope="col">HTTP Method</th>
+                <th scope="col">Response</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Get a list of all movies</td>
+                <td>/movies</td>
+                <td>GET</td>
+                <td>A Json object holding all information about movies/td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user;</td>
+                <td>/movies/[title]</td>
+                <td>GET</td>
+                <td>A JSON object holding data about a single movie, containing an description, genre, director, image URL</td>
+              </tr>
+
+              <tr>
+                <th scope="row">3</th>
+                <td>Return data about a director (bio, birth year, death year) by name;</td>
+                <td>/directors/[name]</td>
+                <td>GET</td>
+                <td>A JSON object holding data about a single movie (bio, birth year, death year)</td>
+              </tr>
+
+              <tr>
+                <th scope="row">4</th>
+                <td>Add new user</td>
+                <td>/users</td>
+                <td>POST</td>
+                <td> JSON object holding data about the user that was added, including an ID: </td>
+              </tr>
+
+
+              <tr>
+                <th scope="row">5</th>
+                <td> Allow users to update their user info</td>
+                <td>/users/[name]</td>
+                <td>PUT</td>
+                <td> JSON object holding data about the user that was added, including an ID: </td>
+              </tr>
+
+          
+
+              <tr>
+                <th scope="row">6</th>
+                <td>Add from list of favourites</td>
+                <td>/users/[name]/movies/favourites</td>
+                <td>POST</td>
+                <td> Text of the name of the movie that was added</td>
+              </tr>
+
+              <tr>
+                <th scope="row">7</th>
+                <td>Remove a movie from list of favourites</td>
+                <td>/users/[name]/movies/favourites</td>
+                <td>DELETE</td>
+                <td> Text of the name of the movie that was added</td>
+              </tr>
+
+              <tr>
+                <th scope="row">8</th>
+                <td>Allow a user to de-register</td>
+                <td>/users</td>
+                <td>DELETE</td>
+                <td> Text that the user has been deleted</td>
+              </tr>
+
+
+            </tbody>
+          </table>
+
         <script src="" async defer></script>
     </body>
 </html>
