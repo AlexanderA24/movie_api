@@ -192,6 +192,14 @@ VALUES('The Dark Knight',
 	   'https://www.imdb.com/title/tt0468569/mediaviewer/rm4023877632/?ref_=tt_ov_i',
 	   True);
 	   
+INSERT INTO Movies(Title, Description, GenreID, DirectorID,ImageUrl,Featured) 
+VALUES('The Lord of the Rings: The Fellowship of the Ring',
+	   'A meek Hobbit from the Shire and eight companions set out on a journey to destroy the powerful One Ring and save Middle-earth from the Dark Lord Sauron.',
+	   3,
+	   3,
+	   'https://www.imdb.com/title/tt0120737/mediaviewer/rm3592958976/?ref_=tt_ov_i',
+	   True);
+	   
 
 INSERT INTO Favourite_Movies(UserID, MovieID) 
 VALUES(1,1);
