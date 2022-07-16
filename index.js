@@ -1,5 +1,8 @@
-const express = require('express'), morgan = require('morgan'), fs = require('fs'), path = require('path'), bodyParser = require('body-parser');;
+const express = require('express'), morgan = require('morgan'), fs = require('fs'), path = require('path'),
+bodyParser = require('body-parser'), mongoose = require('mongoose'), Models = require('./models.js');;
 
+const Movies = Models.Movie;
+const Users = Models.User;
 
 const app = express();
 // create a write stream (in append mode)
