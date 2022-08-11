@@ -5,6 +5,9 @@ const express = require('express'),
 bodyParser = require('body-parser'), 
 mongoose = require('mongoose'), 
 Models = require('./models.js');const { rest } = require('lodash');
+
+
+
 ;
 
 const Movies = Models.Movie;
@@ -16,6 +19,11 @@ const app = express();
 
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+let auth = require('./auth')(app);
+
+const passport = require('passport');
+require('./passport');
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 const {ObjectId} = require("mongoose").Types;
@@ -39,8 +47,8 @@ app.get('/documentation', (req, res) => {
     res.sendFile('public/documentation.html', { root: __dirname });
   });
   
-// Get all movies5
-app.get('/movies', (req, res) => {
+// Get all movies
+app.get('/movies', passport.authenticate('jwt', { session: false}), (req, res) => {
     Movies.find()
       .then(Movies => {
         res.status(201).json(Movies);
@@ -50,6 +58,18 @@ app.get('/movies', (req, res) => {
         res.status(500).send('Error: ' + err);
       });
   });
+
+  // Get all movies
+app.get('/users', (req, res) => {
+  Users.find()
+    .then(Users => {
+      res.status(201).json(Users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
 
 // Return data about a single movie
 app.get('/movies/:title', (req, res) => {
