@@ -46,7 +46,9 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {f
 const {ObjectId} = require("mongoose").Types;
 
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect(process.env.CONNECTION_URI,  { useNewUrlParser: true, useUnifiedTopology: true });
+
+mongoose.connect(process.env.CONNECTION_URI,  
+  { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.set('debug', true);
   // GET requests
@@ -58,11 +60,10 @@ app.use(morgan('common'));
 
 app.use(bodyParser.json());
 
-app.use('/', routes);
 
-app.get('/', (err,req, res, next) => {
-    res.send('Welcome to the movie recommender!');
-  });
+app.get('/', (req, res) => {
+  res.send('Welcome to MyFlix!');
+});
   
 app.get('/documentation', (req, res) => {                  
     res.sendFile('public/documentation.html', { root: __dirname });
@@ -287,6 +288,8 @@ app.delete('/users/:username', (req, res) => {
     res.status(500).send('Error: ' + err);
   });
 });
+
+app.use(express.static('public'));
 
 app.use((err, req, res, next) => {
 console.error(err.stack);
