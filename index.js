@@ -58,6 +58,8 @@ app.use(morgan('common'));
 
 app.use(bodyParser.json());
 
+app.use('/', routes);
+
 app.get('/', (err,req, res, next) => {
     res.send('Welcome to the movie recommender!');
   });
