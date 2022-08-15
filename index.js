@@ -88,7 +88,7 @@ app.get('/users', (req, res) => {
   Users.find()
     .then(Users => {
       res.status(201).json(Users);
-      console.log(json(Users));
+      console.log(JSON.stringify(Users));
     })
     .catch((err) => {
       console.error(err);
