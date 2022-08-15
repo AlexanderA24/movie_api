@@ -102,7 +102,7 @@ app.get('/movies/:title', (req, res) => {
   Movies.findOne({ title : req.params.title})
     .then((movie) => {
       res.json(movie);
-      console.log(json(movie));
+      console.log(res.json(movie));
     })
     .catch((err) => {
       console.error(err);
