@@ -72,6 +72,8 @@ const {ObjectId} = require("mongoose").Types;
 // };
 
 mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+console.log(process.env.CONNECTION_URI);
+
 
 // mongoose.connect(process.env.CONNECTION_URI, (err) => {
 //   if (err) throw err;
@@ -111,6 +113,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false}), (req, res) =
 
   // Get all movies
 app.get('/users', (req, res) => {
+  console.log(Users.find()),
   Users.find()
     .then(Users => {
       res.status(201).json(Users);
