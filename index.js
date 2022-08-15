@@ -47,10 +47,12 @@ const {ObjectId} = require("mongoose").Types;
 
 // mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-mongoose.connect(process.env.CONNECTION_URI, (err) => {
-  if (err) throw err;
-  console.log('Connected to MongoDB!!!');
-}); 
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// mongoose.connect(process.env.CONNECTION_URI, (err) => {
+//   if (err) throw err;
+//   console.log('Connected to MongoDB!!!');
+// }); 
 
 mongoose.set('debug', true);
   // GET requests
