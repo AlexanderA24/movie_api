@@ -56,22 +56,22 @@ const {ObjectId} = require("mongoose").Types;
 //   client.close();
 // });
 
-const db = process.env.CONNECTION_URI;
+// const db = process.env.CONNECTION_URI;
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(db, {
-      useUnifiedTopology: true,
-      useNewUrlParser: true
-    });
-    console.log("MongoDB is Connected...");
-  } catch (err) {
-    console.error(err.message);
-    process.exit(1);
-  }
-};
+// const connectDB = async () => {
+//   try {
+//     await mongoose.connect(db, {
+//       useUnifiedTopology: true,
+//       useNewUrlParser: true
+//     });
+//     console.log("MongoDB is Connected...");
+//   } catch (err) {
+//     console.error(err.message);
+//     process.exit(1);
+//   }
+// };
 
-//  mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // mongoose.connect(process.env.CONNECTION_URI, (err) => {
 //   if (err) throw err;
