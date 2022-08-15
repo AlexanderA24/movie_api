@@ -45,9 +45,9 @@ require('./passport');
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
 const {ObjectId} = require("mongoose").Types;
 
-// mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // mongoose.connect(process.env.CONNECTION_URI, (err) => {
 //   if (err) throw err;
@@ -196,50 +196,57 @@ $set:
 }*/
 
 app.post('/users',
-  // Validation logic here for request
+  //Validatin logic here for request
   //you can either use a chain of methods like .not().isEmpty()
   //which means "opposite of isEmpty" in plain english "is not empty"
-  //or use .isLength({min: 5}) which means
-  //minimum value of 5 characters are only allowed
+  //or use .isLength({min:5}) which means
+  //mininum value of 5 characters are only allowed
   [
-    check('Username', 'Username is required').isLength({min: 5}),
-    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-    check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email does not appear to be valid').isEmail()
-  ], (req, res) => {
-
-  // check the validation object for errors
+    check('username', 'Username is required').isLength({ min: 5 }),
+    check(
+      'username','Username contains non alphanumeric characters - not allowed.'
+    ).isAlphanumeric(),
+    check('password', 'Password is required').not().isEmpty(),
+    check('email', 'Email does not appear to be valid').isEmail(),
+  ],
+  (req, res) => {
+    //check the validation object for errors
     let errors = validationResult(req);
 
     if (!errors.isEmpty()) {
       return res.status(422).json({ errors: errors.array() });
     }
-  let hashedPassword = Users.hashPassword(req.body.Password);
-  Users.findOne({ username: req.body.username })
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.username + ' already exists');
-      } else {
-        Users
-          .create({
-         
-            username: req.body.username,
-            password: hashedPassword,
-            email: req.body.email,
-            birth_date: req.body.birth_date
-          })
-          .then((user) =>{res.status(201).json(user) })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-        })
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
-});
+
+    let hashPassword = Users.hashPassword(req.body.password);
+    Users
+      .findOne({ username: req.body.username }) // Search to see if a user with the requested username already exists
+      .then((user) => {
+        if (user) {
+          //if the user is found, send a response that it already exists
+          return res.status(400).send(req.body.Username + 'already exists');
+        } else {
+          Users
+            .create({
+              username: req.body.username,
+              password: hashPassword,
+              email: req.body.email,
+              birth_date: req.body.birth_date,
+            })
+            .then((user) => {
+              res.status(201).json(user);
+            })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error:' + error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        res.status(500).send('Error:' + error);
+      });
+  }
+);
 
 // Add a movie to list of favourites
 app.post('/users/:username/favourite_movies/:MovieID', (req, res) => {
