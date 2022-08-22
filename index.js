@@ -87,6 +87,7 @@ app.get('/movies', (req, res) => {
 });
 
 
+
 // Get all movies
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.find()
@@ -127,7 +128,7 @@ app.get('/users/:username', passport.authenticate('jwt', { session: false }), (r
 
 // Return data about a single  genre
 app.get('/movies/genre/:name', (req, res) => {
-  Movies.findOne({ 'genre.name': req.params.name })
+  Movies.findOne({ 'genre.name': req.params.name }, { _id: 0, "genre": 1 })
     .then((genre) => {
       res.json(genre);
     })
@@ -140,7 +141,7 @@ app.get('/movies/genre/:name', (req, res) => {
 
 // Return data about a single director
 app.get('/movies/director/:name', (req, res) => {
-  Movies.findOne({ 'director.name': req.params.name })
+  Movies.findOne({ 'director.name': req.params.name }, { _id: 0, "director": 1 })
     .then((director) => {
       res.json(director);
     })
