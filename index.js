@@ -86,6 +86,7 @@ app.get('/movies', (req, res) => {
     });
 });
 
+
 // Get all movies
 app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.find()
