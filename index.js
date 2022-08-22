@@ -176,7 +176,6 @@ app.put('/users/:username',
       }
     },
 
-
       { new: true }, // This line makes sure that the updated document is returned
 
       (err, updatedUser) => {
