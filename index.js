@@ -253,54 +253,55 @@ app.post('/users',
 
 // Add a movie to list of favourites
 app.post('/users/:username/favourite_movies/:MovieID', (req, res) => {
-  console.log(req.params.MovieID)
-  Users.findOneAndUpdate({ Username: req.params.username }, {
-    $push: { favourite_movies: mongoose.Types.ObjectId(req.params.MovieID.trim()) }
-  },
-    { new: true },
-    (err, updatedUser) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      } else {
-        res.json(updatedUser);
-      }
-    });
+  passport.authenticate('jwt', { session: false }),
+    Users.findOneAndUpdate({ Username: req.params.username }, {
+      $push: { favourite_movies: mongoose.Types.ObjectId(req.params.MovieID.trim()) }
+    },
+      { new: true },
+      (err, updatedUser) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send('Error: ' + err);
+        } else {
+          res.json(updatedUser);
+        }
+      });
 });
 
 
 // Delete movie from list of favourites
 app.delete('/users/:username/favourite_movies/:MovieID', (req, res) => {
-  console.log(req.params.MovieID)
-  Users.findOneAndUpdate({ Username: req.params.username }, {
-    $pull: { favourite_movies: mongoose.Types.ObjectId(req.params.MovieID.trim()) }
-  },
-    { new: true },
-    (err, updatedUser) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      } else {
-        res.json(updatedUser);
-      }
-    });
+  passport.authenticate('jwt', { session: false }),
+    Users.findOneAndUpdate({ Username: req.params.username }, {
+      $pull: { favourite_movies: mongoose.Types.ObjectId(req.params.MovieID.trim()) }
+    },
+      { new: true },
+      (err, updatedUser) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send('Error: ' + err);
+        } else {
+          res.json(updatedUser);
+        }
+      });
 });
 
 
 // Allow a user to de-register
 app.delete('/users/:username', (req, res) => {
-  Users.findOneAndRemove({ username: req.params.username })
-    .then((user) => {
-      if (!user) {
-        res.status(400).send(req.params.username + ' was not found');
-      } else {
-        res.status(200).send(req.params.username + ' was deleted.')
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
+  passport.authenticate('jwt', { session: false }),
+    Users.findOneAndRemove({ username: req.params.username })
+      .then((user) => {
+        if (!user) {
+          res.status(400).send(req.params.username + ' was not found');
+        } else {
+          res.status(200).send(req.params.username + ' was deleted.')
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      });
 });
 
 app.use(express.static('public'));
