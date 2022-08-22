@@ -75,10 +75,10 @@ app.get('/documentation', (req, res) => {
 });
 
 // Get all movies
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies', (req, res) => {
   Movies.find()
-    .then(Movies => {
-      res.status(201).json(Movies);
+    .then(movies => {
+      res.status(201).json(movies);
     })
     .catch((err) => {
       console.error(err);
@@ -87,11 +87,11 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
 });
 
 // Get all movies
-app.get('/users', (req, res) => {
+app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.find()
-    .then(Users => {
-      res.status(201).json(Users);
-      console.log(JSON.stringify(Users));
+    .then(users => {
+      res.status(201).json(users);
+      console.log(JSON.stringify(users));
     })
     .catch((err) => {
       console.error(err);
@@ -113,7 +113,7 @@ app.get('/movies/:title', (req, res) => {
 });
 
 // Return data about a single user
-app.get('/users/:username', (req, res) => {
+app.get('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ username: req.params.username })
     .then((user) => {
       res.json(user);
@@ -126,7 +126,7 @@ app.get('/users/:username', (req, res) => {
 
 // Return data about a single  genre
 app.get('/movies/genre/:name', (req, res) => {
-  Movies.findOne({ 'genre.name': req.params.name }, { _id: 0, "genre": 1 })
+  Movies.findOne({ 'genre.name': req.params.name })
     .then((genre) => {
       res.json(genre);
     })
@@ -139,7 +139,7 @@ app.get('/movies/genre/:name', (req, res) => {
 
 // Return data about a single director
 app.get('/movies/director/:name', (req, res) => {
-  Movies.findOne({ 'director.name': req.params.name }, { _id: 0, "director": 1 })
+  Movies.findOne({ 'director.name': req.params.name })
     .then((director) => {
       res.json(director);
     })
@@ -162,30 +162,32 @@ app.get('/movies/director/:name', (req, res) => {
   Birthday: Date
 }*/
 
-app.put('/users/:username', (req, res) => {
-  console.log(req.body)
-  Users.findOneAndUpdate({ username: req.params.username }, {
-    $set:
-    {
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email,
-      birth_date: req.body.birth_date
-    }
-  },
+app.put('/users/:username',
 
-
-    { new: true }, // This line makes sure that the updated document is returned
-
-    (err, updatedUser) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      } else {
-        res.json(updatedUser);
+  passport.authenticate('jwt', { session: false }), (req, res) => {
+    let hashPassword = Users.hashPassword(req.body.password);
+    Users.findOneAndUpdate({ username: req.params.username }, {
+      $set:
+      {
+        username: req.body.username,
+        password: hashPassword,
+        email: req.body.email,
+        birth_date: req.body.birth_date
       }
-    });
-});
+    },
+
+
+      { new: true }, // This line makes sure that the updated document is returned
+
+      (err, updatedUser) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send('Error: ' + err);
+        } else {
+          res.json(updatedUser);
+        }
+      });
+  });
 
 //Add a user
 /* We’ll expect JSON in this format
